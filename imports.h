@@ -18,4 +18,6 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_multiroots.h>
 #include <gsl/gsl_complex_math.h>
+#include <algorithm>
+#include <unordered_set>
 using namespace std;

@@ -1,20 +1,18 @@
 #include "imports.h"
 
-void pv( const vector<double> &out ){
-	int l = out.size();
-	for(int i = 0; i<l; i++){
-		cout<<out[i]<<"\t";
-	}
-	cout<<endl;
-}
+/////////////////////////////////////////////////////
+// ALGORITHM IMPLEMENTATIONS
+// G. Gossel 2018
+/////////////////////////////////////////////////////
 
-//~ /////////////////////////////////////////////////////////////
-int partition(vector<double> &vec, int start, int end ){
+/////////////////////////////////////////////////////////////
+// Helper function for quicksort
+int partition(vector<int> &vec, int start, int end ){
 	
-	double a,b;
+	int a,b;
 	
 	int li(start+1), ri(end);
-	double pivot_val = vec[start];
+	int pivot_val = vec[start];
 	bool run = true;
 	while(run){
 		
@@ -44,8 +42,10 @@ int partition(vector<double> &vec, int start, int end ){
 	return ri;
 }
 
-//~ /////////////////////////////////////////////////////////////
-void quicksort(vector<double> &vec, int first, int last ){
+/////////////////////////////////////////////////////////////
+// Implementation of quicksort 
+// Seems possibly faster if random pivot chosen, future work
+void quicksort(vector<int> &vec, int first, int last ){
 	if(first<last){
 		int split = partition(vec,first,last);
 		quicksort(vec, first, split-1);
@@ -55,10 +55,13 @@ void quicksort(vector<double> &vec, int first, int last ){
 
 
 
-
-void merge( vector<double> &arr, int l, int m, int r){
+/////////////////////////////////////////////////////////////
+// Helper function for mergesort
+// Merges two sorted arrays into a single correctly
+// sorted array
+void merge( vector<int> &arr, int l, int m, int r){
 	int count = l;
-	vector<double> out = arr;
+	vector<int> out = arr;
 	int i(l), j(m+1);
 	
 	while( i <= m && j <=r){
@@ -92,7 +95,9 @@ void merge( vector<double> &arr, int l, int m, int r){
 
 }
 
-void mergesort( vector<double> &vec, int l, int r ){
+/////////////////////////////////////////////////////////////
+// Mergesort function
+void mergesort( vector<int> &vec, int l, int r ){
 			
 	if(l<r){
 		int m  = l+( r- l )/2;
@@ -100,4 +105,85 @@ void mergesort( vector<double> &vec, int l, int r ){
 		mergesort( vec, m+1, r );
 		merge(vec, l, m, r);
 	}
+}
+
+
+/////////////////////////////////////////////////////////////
+// Poor iterative solution of algorithm to find
+// all permutations of a string
+void addLetter( const string inp, char letter, vector<string> &outp){
+	int len = inp.length()+1;
+	string temp = inp;
+	vector<string> out = {};
+	for(int i =0; i<len; i++){ 
+		temp.insert( i, 1, letter );
+		temp = inp;
+		outp.push_back(temp.insert( i, 1, letter ));
+	}
+}
+
+
+void permute( string inp ){
+	vector<string> perms = {inp.substr(0,1)};
+	vector<string> temp = {};
+	
+	for(int i = 1; i<inp.length(); i++){
+		temp = {};
+		for(int j = 0; j<perms.size(); j++){
+			addLetter( perms[j], inp.at(i), temp);
+		}
+		perms = temp;
+	}
+}
+
+/////////////////////////////////////////////////////////////
+// Much more elegant recursive implementation
+// that i feel stupid for not getting the first time around
+void perm2( string inp, int l ){
+	int s = inp.length();
+	if(l == s-1){
+		cout<<inp<<endl;
+	} else {
+		for(int i = l; i<s; i++){
+			swap(inp[l],inp[i]);
+			perm2(inp, l+1);
+		}
+	}
+}
+
+
+/////////////////////////////////////////////////////
+// Implementation of radix sort for linear time
+// sorting of integers
+void radixSort( vector<int> &vec ){
+	int l = vec.size();
+	int max = findMax(vec);// O(N)
+	int nDig = findNDig( max ); //O(max) ?
+	vector< vector<int> > buckets(10);
+	vector<int> empty = {};
+	int dig;
+	int n = 0;
+	
+	while(n<nDig){
+		fill(buckets.begin(),buckets.end(),empty);
+		for( int i = 0; i<l; i++){
+			dig = intIndex(vec[i],n);
+			buckets[dig].push_back(vec[i]);
+		}
+		int buck = 0;
+		int vecK = 0;
+		int m;
+		while(buck<10 ){
+			m = 0;
+			while( m < buckets[buck].size()){
+				vec[vecK] = buckets[buck][m];
+				vecK++;
+				m++;
+			}
+			buck++;
+		}
+		n++;
+		
+	}
+	
 }
