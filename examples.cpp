@@ -15,17 +15,17 @@ int main ( int argc, char *argv[] ){
 	vector<int> vals = {54,26,93,17,77,31,44,55,20};
 	
 	// TEST SORTING ALGORITHMS
-	cout<<"======Sorting======"<<endl;
-	vector<int> qs(vals), ms(vals), rs(vals);
-	cout<<"Quicksort:"<<endl;
-	quicksort(qs, 0, qs.size()-1);
-	pv(qs);
-	cout<<"Mergesort:"<<endl;
-	mergesort(ms, 0, ms.size()-1);
-	pv(ms);
-	cout<<"Radixsort:"<<endl;
-	radixSort(rs);
-	pv(rs);	
+	//~ cout<<"======Sorting======"<<endl;
+	//~ vector<int> qs(vals), ms(vals), rs(vals);
+	//~ cout<<"Quicksort:"<<endl;
+	//~ quicksort(qs, 0, qs.size()-1);
+	//~ pv(qs);
+	//~ cout<<"Mergesort:"<<endl;
+	//~ mergesort(ms, 0, ms.size()-1);
+	//~ pv(ms);
+	//~ cout<<"Radixsort:"<<endl;
+	//~ radixSort(rs);
+	//~ pv(rs);	
 	
 	// TEST MAXHEAP DATASTRUCTURE
 	//~ cout<<"======MaxHeap======"<<endl;
@@ -67,13 +67,13 @@ int main ( int argc, char *argv[] ){
 	//~ perm2("ABC",0);
 	
 	
-	//~ // HASH TABLE TEST
-	//~ hashTableString stringTable;
-	//~ stringTable.insert("A", "X");
-	//~ stringTable.insert("B", "sadasd");
-	//~ cout<<stringTable["A"]<<endl;
-	//~ cout<<stringTable["B"]<<endl;
-	
+	// HASH TABLE TEST
+	hashTableString stringTable;
+	stringTable.insert("a", "1");
+	stringTable.insert("badsf3wfsdfvfvff23efvfv", "f");
+	stringTable.insert("c", "d");
+	stringTable.insert("asdfa3rd", "3");
+	stringTable.insert("e", "s");
 	
 	
 	return 0;

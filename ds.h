@@ -270,12 +270,14 @@ class hashTableString {
 	}
 	
 	////////////////////////////////////////////////////////////
-	// Custom hashing function
-	int hashFn( string s ){
-		int hash(0);
+	// FNV hashing function as described in
+	// http://www.eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx
+	unsigned int hashFn( string s ){
+		unsigned int hash(0);
+		hash = 2166136261;
 		int l = s.length();
 		for(int i = 0; i<l;i++){
-			hash+= l*((int) s[i]%11)/length;
+			hash = (hash*16777619)^s[i];
 		}
 		return hash;
 	}
@@ -283,7 +285,8 @@ class hashTableString {
 	////////////////////////////////////////////////////////////
 	// Get index of given key using above hash function
 	int getIndex( string key ){
-		int hash = hashFn(key);
+		unsigned int hash = hashFn(key);
+		
 		int index = hash % (length);
 		
 		return index;
