@@ -8,7 +8,7 @@ This is a set of basic implementations of common CS algorithms and data structur
 - Radix sort
 - Permutations of a string
 - Algorithm for Largest Sum Contiguous Subarray problem (brute force and my own attempt at homegrown Kadane)
-- Algorithm to remove invalid parentheses in string with fewest number of deletions using DFS (finds multiple solutions)
+- Algorithm to remove invalid parentheses in string with fewest number of deletions using BFS (finds multiple solutions)
 - Dijkstra
 
 #### Data structures
