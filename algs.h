@@ -182,8 +182,127 @@ void radixSort( vector<int> &vec ){
 			}
 			buck++;
 		}
-		n++;
+		n++;	
+	}
+}
+
+
+
+/////////////////////////////////////////////////////
+// Largest sum contiguous subarray (Kadengesdasd alg)
+// My hacky attempt first. First do brute force
+
+vector<int> K1(vector<int> &in){
+	int l = in.size();
+	vector<int> temp;
+	vector<int> out;
+
+	int sum;
+	int max = in[0];
+	for(int i = 0; i<l; i++){
+		for(int j = i; j<l; j++){
+			temp.resize( j - i+1);
+			copy(in.begin()+i, in.begin()+j+1, temp.begin());
+			sum = accumulate(temp.begin(),temp.end(),0);
+			if(sum>max){
+				max = sum;
+				out = temp;
+			}
+		}
 		
 	}
+	return out;
+}
+
+
+/////////////////////////////////////////////////////
+// Better version of above (hopefully)
+vector<int> K2(vector<int> &in ){
+	vector<int> out;
+	int max = in[0];
+	int sum = 0;
+	int i(0), j(0);
+	int l = in.size();
+	int a(0),b(0);
+	while( j<l ){
+		sum += in[j];
+		
+		if( sum > max ){
+			max = sum;
+			a = i;
+			b = j;
+		}
+		
+		if(  sum<0) {
+			sum =  0;
+			i = j+1;//need to think carefully about +1 here...
+		}
+		j++;
+	}
+	out.resize( b - a+1);
+	copy(in.begin()+a, in.begin()+b+1, out.begin());
+	return out;
+}
+
+/////////////////////////////////////////////////////
+// check if string with pars is balanced
+bool isBalanced( string str  ){
 	
+	stack<string> par;
+	string c;
+	for(int i = 0; i<str.length(); i++){
+		c = str[i];
+		if( c == "(" ){
+			par.push(c);
+		}
+		
+		if( c==")" && par.size() !=0){
+			par.pop();
+		} else if(c==")" && par.size() ==0){
+			return false;
+		}
+	}
+	
+	if(par.size() == 0){
+		return true;
+	}
+		
+	return false;
+}
+
+/////////////////////////////////////////////////////
+// Remove invalid parentheses using BFS
+vector<string> remIP( string str ){
+	int l = str.length();
+	int n = 0;
+	string temp;
+	string s;
+	queue<string> nodes;
+	nodes.push(str);
+	bool current;
+	int count(0);
+	unordered_set<string> visited;
+	bool found = false;
+	vector<string> valid;
+	while( !nodes.empty()){
+		s = nodes.front();
+		current = isBalanced(s);
+		if(current){
+			valid.push_back(s);
+			found = true;
+		} else if (!current and !found) { 
+			for(int i = 0; i<s.length();i++){
+				temp = s;
+				temp.erase(i,1);
+				if(visited.find(temp) == visited.end()){
+					nodes.push(temp);
+					visited.insert(temp);
+				} 
+			}
+			
+		}
+		nodes.pop();
+		count++;
+	}
+	return valid;
 }

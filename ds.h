@@ -237,16 +237,17 @@ class graph {
 // Hash table implementation using basic hashing function
 // Currently overloads [] operator to use key->val access
 // in order to keep 'vals' private (contains empty bits)
-class hashTableString {
+
+template <typename T> class hashTable {
 	private:
-		vector<string> vals;	
+		vector<T> vals;	
 	public:
 		int length;
 		int nElements;
 	
-		vector<string> keys;
+		vector<T> keys;
 		
-		hashTableString( ){
+		hashTable( ){
 			length = 10;
 			nElements = 0;
 			vals.resize(length);
@@ -255,7 +256,7 @@ class hashTableString {
 		
 	////////////////////////////////////////////////////////////
 	// Insert new key-val pair
-	void insert( string key, string val ){
+	void insert( T key, T val ){
 		int index = getIndex(key);
 		keys.push_back(key);
 			
@@ -272,7 +273,7 @@ class hashTableString {
 	////////////////////////////////////////////////////////////
 	// FNV hashing function as described in
 	// http://www.eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx
-	unsigned int hashFn( string s ){
+	unsigned int hashFn( T s ){
 		unsigned int hash(0);
 		hash = 2166136261;
 		int l = s.length();
@@ -284,7 +285,7 @@ class hashTableString {
 
 	////////////////////////////////////////////////////////////
 	// Get index of given key using above hash function
-	int getIndex( string key ){
+	int getIndex( T key ){
 		unsigned int hash = hashFn(key);
 		
 		int index = hash % (length);
@@ -295,8 +296,72 @@ class hashTableString {
 	
 	////////////////////////////////////////////////////////////
 	// Operator overloading
-	string operator[] (string key){
+	T operator[] (T key){
 		int index = getIndex(key);
-		return vals[index];
+		if(vals[index].size() == 0 ){
+			return "DNE";
+		} else {
+			return vals[index];
+		}
 	}
 };
+
+
+/////////////////////////////////////////////
+// Basic singly linked list based just on
+// head node class
+class Node {
+	public:
+		int data;
+		Node* next = NULL;
+		Node( int d ){
+			data = d;
+		};
+	
+		void appendToTail( int d ){
+			Node* tail = new Node(d);
+			Node* n = this;
+			while( n->next != NULL){
+				n = n->next;
+			}
+			n->next = tail;
+		}	
+};
+
+// Function to find and remove value in LL
+Node* deleteNode( Node* head, int d ){
+	Node *n = head;
+	
+	if( n->data == d ){
+		Node* temp = n->next;
+		delete n;
+		return temp;
+	}
+	
+	while( n->next != NULL ){
+		if(n->next->data == d ){
+			n->next = n->next->next;
+			delete n->next;
+			return head;
+		}
+		n = n->next;
+	}
+	return head;
+}
+
+
+//~ Node* delDuplicates( Node* head ){
+	//~ hashTable<string> ledger;
+	//~ Node* n = head;
+	//~ string d;
+	//~ while( n-> next != NULL ){
+		//~ d = to_string(n->data);
+		//~ if( ledger[d] != "DNE"){
+			//~ ledger.insert(d,"1");
+		//~ } else {
+			//~ n
+		//~ }
+		//~ n = n->next;
+	//~ }
+	
+//~ }

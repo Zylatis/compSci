@@ -100,3 +100,6 @@ int findNDig( int a ){
 	}
 	return n-1;
 }
+
+
+

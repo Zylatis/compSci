@@ -68,13 +68,28 @@ int main ( int argc, char *argv[] ){
 	
 	
 	// HASH TABLE TEST
-	hashTableString stringTable;
-	stringTable.insert("a", "1");
-	stringTable.insert("badsf3wfsdfvfvff23efvfv", "f");
-	stringTable.insert("c", "d");
-	stringTable.insert("asdfa3rd", "3");
-	stringTable.insert("e", "s");
+	//~ hashTable<string> stringTable;
+	//~ stringTable.insert("a", "1");
+	//~ stringTable.insert("badsf3wfsdfvfvff23efvfv", "f");
+	//~ stringTable.insert("c", "d");
+	//~ stringTable.insert("asdfa3rd", "3");
+	//~ stringTable.insert("e", "s");
+	//~ cout<<stringTable["x"]<<endl;
 	
+	//~ Node* test = new Node(1);;
+	//~ test->appendToTail(2);
+	//~ cout<<test<<endl;
+	//~ cout<<test->next<<endl;
+	//~ cout<<deleteNode( test, 1)<<endl;
+	
+	//~ vector<int> arr = {-2,-3,4,-1,-2,1,5,-30,1,5,10};
+	//~ vector<int> LS = K1(arr);
+	//~ vector<int> LS2 = K2(arr);
+	//~ pv(LS);
+	//~ pv(LS2);
+
+	//~ cout<<isBalanced("()())()")<<endl;
+	pv(remIP("()v)"));
 	
 	return 0;
 	
