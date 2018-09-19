@@ -3,16 +3,16 @@ This is a set of basic implementations of common CS algorithms and data structur
 
 ### Covered so far (in some form or another)
 #### Algorithms
-> Quicksort
-> Merge sort
-> Radix sort
-> Permutations of a string
-> Algorithm for Largest Sum Contiguous Subarray problem (brute force and my own attempt at homegrown Kadane)
-> Algorithm to remove invalid parentheses in string with fewest number of deletions using DFS (finds multiple solutions)
-> Dijkstra
+- Quicksort
+- Merge sort
+- Radix sort
+- Permutations of a string
+- Algorithm for Largest Sum Contiguous Subarray problem (brute force and my own attempt at homegrown Kadane)
+- Algorithm to remove invalid parentheses in string with fewest number of deletions using DFS (finds multiple solutions)
+- Dijkstra
 
 #### Data structures
-> Max heap
-> Graph (not very well though)
-> Linked list (even worse than graph)
-> Hash map
+- Max heap
+- Graph (not very well though)
+- Linked list (even worse than graph)
+- Hash map
