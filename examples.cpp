@@ -6,8 +6,9 @@
 
 #include "imports.h"
 #include "fns.h"
+
 #include "algs.h"
-#include "ds.h"
+
 /////////////////////////////////////////////////////////////
 int main ( int argc, char *argv[] ){
 	
@@ -54,7 +55,7 @@ int main ( int argc, char *argv[] ){
 		//~ GM[i].resize(n);
 	//~ }
 	// Reading adjacency matrix from file
-	// will replace with inline def to make
+	// wl replace with inline def to make
 	// self contained at somepoint
 	// (i.e. from GeeksForGeeks)
 	//~ GM = FileRead("G.dat");
@@ -76,20 +77,68 @@ int main ( int argc, char *argv[] ){
 	//~ stringTable.insert("e", "s");
 	//~ cout<<stringTable["x"]<<endl;
 	
+	// linked lists and stuff
 	//~ Node* test = new Node(1);;
 	//~ test->appendToTail(2);
 	//~ cout<<test<<endl;
 	//~ cout<<test->next<<endl;
 	//~ cout<<deleteNode( test, 1)<<endl;
+
 	
+	// make linked list and hack in cycle
+	linkedList<int> test(1);
+	test.addLast(2);
+	test.addLast(3);
+	test.addLast(4);
+	//~ cout<<test.head->next<<endl;
+	test.reverse(test.head);
+	
+	//~ test.head->next->next->next->next = test.head->next->next;
+	cout<<test.get(0)<<endl;
+	cout<<test.get(1)<<endl;
+	cout<<test.get(2)<<endl;
+	cout<<test.get(3)<<endl;
+	//~ cout<<test.get(4)<<endl;
+	
+	// now try to detect cycle with runners
+	// have 'back' and 'forward' pointers
+	// when forward has next as back, are at cycle point
+	
+	//~ auto p1 = test.head;
+	//~ auto p2 = test.head->next;
+	//~ while( p2->next != p1 ){
+		//~ p2 = p2->next;
+		//~ p1 = p1->next;
+	//~ }
+	//~ cout<<p1->next->data<<"\t"<<p2->next->data<<endl;
+	
+	
+	
+	// max sum subsequence alg
 	//~ vector<int> arr = {-2,-3,4,-1,-2,1,5,-30,1,5,10};
 	//~ vector<int> LS = K1(arr);
 	//~ vector<int> LS2 = K2(arr);
 	//~ pv(LS);
 	//~ pv(LS2);
 
+	// balance a string with parentheses with the
+	// fewest number of deletions
 	//~ cout<<isBalanced("()())()")<<endl;
-	pv(remIP("()v)"));
+	//~ pv(remIP("()v)"));
+	
+	
+	// test graph ds using adjacency lists
+	//~ graphNode<int> a(1),b(2),c(3),d(4),e(5);
+	//~ a.addConnection(e);
+	
+	//~ a.addConnection(b);
+	//~ b.addConnection(c);
+	//~ c.addConnection(d);
+
+	// do dfs on graph to see if number is reachable from initial node.
+	//~ unordered_set<graphNode<int>*> visited;
+	//~ dfs( &a,7,visited);
+	
 	
 	return 0;
 	

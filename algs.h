@@ -1,5 +1,5 @@
 #include "imports.h"
-
+#include "ds.h"
 /////////////////////////////////////////////////////
 // ALGORITHM IMPLEMENTATIONS
 // G. Gossel 2018
@@ -305,4 +305,25 @@ vector<string> remIP( string str ){
 		count++;
 	}
 	return valid;
+}
+
+
+
+void dfs( graphNode<int>* head, int target, unordered_set<graphNode<int>*> &visited ){
+	visited.insert(head);
+	cout<<head->dat<<endl;	
+	unordered_set<graphNode<int>* > connections;
+	int val;
+	for(auto i = head->connections.begin(); i!=head->connections.end(); i++){
+		val = (*i)->dat;
+		
+		if(val == target){
+			cout<<"found!"<<endl;
+			exit(0);
+		} else if( visited.find((*i)) == visited.end()){
+			dfs( *i, target, visited);
+		}
+		
+	}
+	
 }

@@ -307,47 +307,114 @@ template <typename T> class hashTable {
 };
 
 
-/////////////////////////////////////////////
-// Basic singly linked list based just on
-// head node class
-class Node {
-	public:
-		int data;
-		Node* next = NULL;
-		Node( int d ){
-			data = d;
-		};
-	
-		void appendToTail( int d ){
-			Node* tail = new Node(d);
-			Node* n = this;
-			while( n->next != NULL){
-				n = n->next;
-			}
-			n->next = tail;
-		}	
-};
 
-// Function to find and remove value in LL
-Node* deleteNode( Node* head, int d ){
-	Node *n = head;
-	
-	if( n->data == d ){
-		Node* temp = n->next;
-		delete n;
-		return temp;
-	}
-	
-	while( n->next != NULL ){
-		if(n->next->data == d ){
-			n->next = n->next->next;
-			delete n->next;
-			return head;
+////////////////////////////////////////////////////////////
+// Linked list class with nested Node class
+template <typename T> class linkedList {
+	private:
+		// single linked list node class
+		class Node {
+			public:
+				int data;
+				Node* next = NULL;
+				Node(){};
+				Node( int d ){
+					data = d;
+				};
+		};
+		
+	////////////////////
+	public:
+		Node* head = new Node();
+		Node* tail = head;
+		int size;
+		linkedList<T>( T d ){
+			head->data = d;
+			head->next = NULL; // IMPORTANT NOTE, CHANGED THIS FOR REVERSE CODE MAY HAVE BROKEN ALL THE OTHER STUFF
 		}
-		n = n->next;
+		
+		
+	Node* reverse( Node* current ){
+		if( current->next == NULL ){
+			head = current;
+			return current;
+		}
+		Node* x = reverse( current->next );
+		x->next = current;
+		return current;
 	}
-	return head;
-}
+	
+	// add element at front of list and reset head
+	Node* addFirst( int d ){
+		Node* temp = new Node(d);
+		temp->next = head;
+		head = temp;
+		size++;
+		return head;
+	}
+	
+	// add element at end of list and reset head
+	Node* addLast( int d ){
+		Node* temp = new Node(d);
+		tail->next = temp;
+		tail = temp;
+		size++;
+		return tail;
+	}
+	
+	T getFirst(){
+		return head->data;
+	}
+	
+	T getLast(){
+		return tail->data;
+	}
+	
+	T get( int i ){
+		if(size == 0 || i>=size){
+			throw invalid_argument( "Position out of bounds of linked list" );
+		}
+		
+		if(i == 0 ){
+			return head->data;
+		}
+		
+		if(i == size-1 ){
+			return tail->data;
+		}
+		
+		int n = 0;
+		Node* current = head;
+		while(n<i  && current->next != NULL){
+			current = current->next;
+			n++;
+		}
+		
+		return current->data;		
+	}
+	
+	// method to delete node with given value and return head of LL
+	Node* deleteNode( Node* head, int d ){
+		Node *n = head;
+		
+		if( n->data == d ){
+			Node* temp = n->next;
+			delete n;
+			return temp;
+		}
+		
+		while( n->next != NULL ){
+			if(n->next->data == d ){
+				n->next = n->next->next;
+				delete n->next;
+				return head;
+			}
+			n = n->next;
+		}
+		return head;
+	}
+
+};
 
 
 //~ Node* delDuplicates( Node* head ){
@@ -365,3 +432,37 @@ Node* deleteNode( Node* head, int d ){
 	//~ }
 	
 //~ }
+
+/////////////////////////////////////////////
+// adjacency list graph nodes
+// good for memory/insertion/deletion, bad for search
+// though can keep O(N) list somewhere
+template <typename T> class graphNode {
+	private:
+	
+	public:
+		T dat;
+		unordered_set<graphNode<T>* > connections;
+		
+		graphNode<T>(){};
+		graphNode<T>( T inp ){
+			dat = inp;
+		}
+		
+		void addConnection( graphNode<T> &conn ){
+			if(!isConnection(&conn)){
+				connections.insert(&conn);
+				conn.connections.insert(this);
+			} else {
+				cout<<"Already connected"<<endl;
+			}
+		}
+	
+		bool isConnection( graphNode<T>* node ){
+			if(connections.find( node ) == connections.end()){
+				return false;
+			} else {
+				return true;
+			}
+		}
+};
