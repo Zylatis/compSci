@@ -308,7 +308,10 @@ vector<string> remIP( string str ){
 }
 
 
-
+/////////////////////////////////////////////////////
+// Basic DFS to find if one node is connected to another with a particular value, i.e.
+// maze solving. Uses 'new' graph DS, the changes to which may have broken the
+// Dijkstra part :/
 void dfs( graphNode<int>* head, int target, unordered_set<graphNode<int>*> &visited ){
 	visited.insert(head);
 	cout<<head->dat<<endl;	
@@ -325,5 +328,150 @@ void dfs( graphNode<int>* head, int target, unordered_set<graphNode<int>*> &visi
 		}
 		
 	}
+}
+
+/////////////////////////////////////////////////////
+// Doing sum of arbitrary precision integers using
+// vectors. Motivated by Hackerrank question
+// where result just needs to be printed to screen
+// (so no conversion back to normal ints needed)
+
+void arbSum( vector<int> &A, vector< int> &B ){
+	reverse(A.begin(),A.end());
+	reverse(B.begin(),B.end());
+	int s1(A.size()), s2(B.size());
+	int resultLength = max(s1,s2);
+	int remainder = 0;
 	
+
+	// assume for now we go left to right, then reverse later
+	vector<int> result(resultLength,0);
+	int val;
+	for(int i = 0; i< resultLength;i++){
+		cout<<A[i]<<"\t"<<B[i]<<"\t"<<remainder<<endl;
+		val = A[i] + B[i] + remainder;
+		if(val>=10){
+			remainder = 1;
+			result[i] = val - 10;
+		} else { 
+			remainder = 0;
+			result[i] = val;
+		}
+		
+	}
+
+	if(remainder!=0){
+		result.push_back(1);
+	}
+
+	for(int i = result.size()-1; i>=0; i--){
+		cout<<result[i];
+	}
+	cout<<endl;
+}
+
+// attempt at coin change problem
+int numWays( vector<int> &arr, int i, int sum ){
+	cout<<arr[i]<<endl;
+	int s = arr.size();
+	if(sum==0){
+		return 1;
+	}
+	 if(sum<=0|| i == s){
+		return 0;
+	} else {
+		return numWays(arr,i+1,sum) + numWays(arr, i, sum-arr[i]);
+	}
+}
+
+// brute force recursive knapsack
+// can be improved with memoization but will run into stack memory issues
+int knapsack( const vector<int> &values, const vector<int> &weights, int i, int w, int v, vector<int> config){
+	int maxW =5	;
+	if(i>values.size()){
+		cout<<"w = "<<w<<", v = "<<v<<endl;
+		pv(config);
+		return 0;
+	} 
+
+	knapsack(values,weights, i+1, w, v, config);	
+	if( w + weights[i] <= maxW){
+		config[i] = 1;
+		knapsack(values,weights, i+1, w + weights[i], v + values[i], config);
+	}
+	
+	return 0;
+}
+
+// DP knapsack
+
+void knapsackDP( const vector<int> &values, const vector<int> &weights, int maxW ){
+	int l = values.size();
+	vector<vector<int> > table(l+1,vector<int>(maxW, 0));
+	for(int i = 1; i<l+1;i++){
+		cout<<values[i-1]<<endl;
+		for(int w = 0; w<maxW; w++){
+			if( weights[i-1] > maxW ){
+				table[i][w] = table[i-1][w];
+			} else {
+				cout<<i<<"\t"<<w<<"\t"<< table[i-1][w - weights[i-2]]+values[i-1]<<endl;
+				//~ table[i][w] = max( table[i-1][w - weights[i-1]]+values[i-1], table[i-1][w]);
+			}
+		}
+	}
+}
+
+
+/////////////////////////////////////////////////////
+// Homegrown attempt at edit distance using DP
+// Developed by guessing that one can somehow
+// do this using a DP table, doing some examples
+// and seeing the pattern - nothing too fancy!
+// (i.e. as of writing this still not entirely sure
+// why this works...well sort of)
+int editDist( const string &s1, const string &s2){
+	int l1(s1.length()), l2(s2.length());
+	vector<vector<int> > table(l1,vector<int>(l2, 0));
+	
+	if( s1[0] == s2[0] ){
+		table[0][0] = 0;
+	} else {
+		table[0][0] = 1;
+	}
+	
+	for(int j = 1; j<l2; j++){
+		if(s1[0] == s2[j]){
+			table[0][j] = table[0][j-1];
+		} else {
+			table[0][j] = table[0][j-1]+1;
+		}
+	}
+	for(int i = 1 ; i<l1;i++){
+		if(s1[i] == s2[0]){
+			table[i][0] = table[i-1][0];
+		} else {
+			table[i][0] = table[i-1][0] + 1;
+		}
+	}
+
+	int best;
+	vector<int> options(3);
+	for(int i = 1; i<l1; i++){
+		for(int j = 1; j<l2; j++){
+			if( s1[i] == s2[j] ){
+				options[0] = table[i-1][j-1];
+			} else {
+				options[0] = table[i-1][j-1] + 1;
+			}
+			
+			options[1] = table[i][j-1] + 1;
+			options[2] = table[i-1][j] + 1;
+			best = *min_element(options.begin(), options.end());
+			table[i][j] = best;
+			//~ pm(table);
+			//~ cout<<"-----------"<<endl;
+		}
+		
+	}
+	return table[l1-1][l2-1];
 }

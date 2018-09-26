@@ -73,7 +73,8 @@ int findNext(int current,  const vector<int> &vec, const unordered_set<int> &spt
 /////////////////////////////////////////////////////
 // Get integer at particular power position in integer
 // i.e. intIndex( 101, 1) = 0
-int intIndex( int a, int n ){
+template <typename T> 
+int intIndex( T a, int n ){
 	return ((int) floor(a/pow(10,n))%10);
 }
 
@@ -91,9 +92,10 @@ int findMax( vector<int> &vec ){
 
 /////////////////////////////////////////////////////
 // Find number of digits in an integer
-int findNDig( int a ){
+template <typename T>
+int findNDig( T a ){
 	int n = 0;
-	int val;
+	T val;
 	while( val<=a){
 		val = pow(10,n);
 		n++;

@@ -77,7 +77,7 @@ int main ( int argc, char *argv[] ){
 	//~ stringTable.insert("e", "s");
 	//~ cout<<stringTable["x"]<<endl;
 	
-	// linked lists and stuff
+	// LINKED LISTS AND STUFF
 	//~ Node* test = new Node(1);;
 	//~ test->appendToTail(2);
 	//~ cout<<test<<endl;
@@ -86,18 +86,18 @@ int main ( int argc, char *argv[] ){
 
 	
 	// make linked list and hack in cycle
-	linkedList<int> test(1);
-	test.addLast(2);
-	test.addLast(3);
-	test.addLast(4);
+	//~ linkedList<int> test(1);
+	//~ test.addLast(2);
+	//~ test.addLast(3);
+	//~ test.addLast(4);
 	//~ cout<<test.head->next<<endl;
-	test.reverse(test.head);
+	//~ test.reverse(test.head);
 	
 	//~ test.head->next->next->next->next = test.head->next->next;
-	cout<<test.get(0)<<endl;
-	cout<<test.get(1)<<endl;
-	cout<<test.get(2)<<endl;
-	cout<<test.get(3)<<endl;
+	//~ cout<<test.get(0)<<endl;
+	//~ cout<<test.get(1)<<endl;
+	//~ cout<<test.get(2)<<endl;
+	//~ cout<<test.get(3)<<endl;
 	//~ cout<<test.get(4)<<endl;
 	
 	// now try to detect cycle with runners
@@ -114,15 +114,15 @@ int main ( int argc, char *argv[] ){
 	
 	
 	
-	// max sum subsequence alg
+	// MAXIMUM CONTIGUOUS SUBSEQUENCE
 	//~ vector<int> arr = {-2,-3,4,-1,-2,1,5,-30,1,5,10};
 	//~ vector<int> LS = K1(arr);
 	//~ vector<int> LS2 = K2(arr);
 	//~ pv(LS);
 	//~ pv(LS2);
 
-	// balance a string with parentheses with the
-	// fewest number of deletions
+	// BREADTH FIRST SEARCH FOR BALANCING OF STRING
+	// PARENTHESES
 	//~ cout<<isBalanced("()())()")<<endl;
 	//~ pv(remIP("()v)"));
 	
@@ -140,8 +140,38 @@ int main ( int argc, char *argv[] ){
 	//~ dfs( &a,7,visited);
 	
 	
-	return 0;
+	// TEST ARBITRARY PRECISION INTEGER ADDITION
+	//~ vector<int> a= { 4,5,8,2,0,8,9,6,3,8,3,0,4,7,3,0,0,6,4,9,4,8,7,4,4,1,9,0,6,1,5,5,2,5,2,0,2,7,4,2,9,0};
+	//~ vector<int> b = {9,0,0,8,5,5,6,2,4,6,8,7,6,2,4,6,3,6,4,9,4,1,8,6,3,7,8,5,5,9,8,5,7,4,0,7,5,0,8,4,2,6};
+	//~ a = {3,5};
+	//~ b = {5};
+	//~ cout<<2*271<<endl;
+	//~ arbSum(a,b);	
 	
+	
+	// COIN CHANGE DP PROBLEM
+	//~ vector<int> x = {1,2,3};
+	//~ int s = 4;
+	//~ int xx = numWays(x,0,s);
+	//~ cout<<"---"<<endl;
+	//~ cout<<xx<<endl;
+	
+	// KNAPSACK PROBLEM
+	//~ vector<int> w = {1,4,2};
+	//~ vector<int> v = {1,2,5};
+	//~ vector<int> config(w.size(),0);
+	//~ cout<<"i \t weight \t value"<<endl;
+	//~ knapsack(v,w,0,0,0, config);
+	//~ knapsackDP(v, w, 5);
+	
+	// EDIT DISTANCE (I actually got this one first try!)
+	string s1 = "aaaaaaaaaaa";
+	string s2 = "back";
+	int d = editDist(s1,s2);
+	cout<<d<<endl;
+	
+	/////////////////////////
+	return 0;
 	
 }
 
