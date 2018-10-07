@@ -312,6 +312,9 @@ vector<string> remIP( string str ){
 // Basic DFS to find if one node is connected to another with a particular value, i.e.
 // maze solving. Uses 'new' graph DS, the changes to which may have broken the
 // Dijkstra part :/
+
+// NOTE: implemented recursively here so is implicitly using a stack.
+// Would be worth implementing iteratively with an explicit stack.
 void dfs( graphNode<int>* head, int target, unordered_set<graphNode<int>*> &visited ){
 	visited.insert(head);
 	cout<<head->dat<<endl;	
@@ -370,7 +373,9 @@ void arbSum( vector<int> &A, vector< int> &B ){
 	cout<<endl;
 }
 
-// attempt at coin change problem
+// Recursive coin change problem
+// Is more concice than the DP one below but see comment,
+// as most lines below are initialization steps
 int numWays( vector<int> &arr, int i, int sum ){
 	cout<<arr[i]<<endl;
 	int s = arr.size();
@@ -384,8 +389,51 @@ int numWays( vector<int> &arr, int i, int sum ){
 	}
 }
 
+// attempt way at DP coin change
+// As with most DP cases here, most of the code is dedicated to initializing the first rows
+// IMPORTANT: revisit these cases and devise a more succinct way to do this
+void numWaysDP( const vector<int> &arr, int sum){
+	int out = 0;
+	int l = arr.size();	
+	int val(0);
+	vector<int> cols(sum,0);
+	vector<vector<int> > table(l,vector<int>(sum, 0));
+	for(int i = 0; i<l; i++){
+		if( arr[i] > 1 ){
+			table[i][0] = 0;
+		} else if(arr[i] == 1 ){
+			table[i][0] = 1;
+		}
+	}
+	
+	for(int j = 0; j<sum;j++){
+		cols[j] = j+1;
+		
+		if( cols[j] <arr[0]){
+			table[0][j] = 0;
+		} else if( cols[j]%arr[0] == 0){
+			table[0][j] = 1;
+		}
+	}
+	
+	for(int i = 1;i<l;i++){
+			for(int j = 1; j<sum; j++){
+				
+				val = table[i-1][j];
+				if( cols[j] == arr[i] ){
+					val++;
+				} else if(cols[j] > arr[i] ){
+					int remainder = cols[j] - arr[i];
+					val+= table[i][remainder-1];
+				}
+				table[i][j] = val;
+		}
+	}
+	pm(table);
+}
+
 // brute force recursive knapsack
-// can be improved with memoization but will run into stack memory issues
+// can be improved with memoization but will run into stack memory issues (probably)
 int knapsack( const vector<int> &values, const vector<int> &weights, int i, int w, int v, vector<int> config){
 	int maxW =5	;
 	if(i>values.size()){
@@ -404,7 +452,6 @@ int knapsack( const vector<int> &values, const vector<int> &weights, int i, int 
 }
 
 // DP knapsack
-
 void knapsackDP( const vector<int> &values, const vector<int> &weights, int maxW ){
 	int l = values.size();
 	vector<vector<int> > table(l+1,vector<int>(maxW, 0));
@@ -414,8 +461,7 @@ void knapsackDP( const vector<int> &values, const vector<int> &weights, int maxW
 			if( weights[i-1] > maxW ){
 				table[i][w] = table[i-1][w];
 			} else {
-				cout<<i<<"\t"<<w<<"\t"<< table[i-1][w - weights[i-2]]+values[i-1]<<endl;
-				//~ table[i][w] = max( table[i-1][w - weights[i-1]]+values[i-1], table[i-1][w]);
+				table[i][w] = max( table[i-1][w - weights[i-1]]+values[i-1], table[i-1][w]);
 			}
 		}
 	}
@@ -468,10 +514,265 @@ int editDist( const string &s1, const string &s2){
 			options[2] = table[i-1][j] + 1;
 			best = *min_element(options.begin(), options.end());
 			table[i][j] = best;
-			//~ pm(table);
-			//~ cout<<"-----------"<<endl;
+			pm(table);
+			cout<<"-----------"<<endl;
 		}
 		
 	}
 	return table[l1-1][l2-1];
+}
+
+// Question 8.2 from CTCI - robot maze!
+// Logic is to simply compare correct adjacent tiles, take one with min steps
+// and have the blocked ones be infinite steps
+void robotMaze( vector<vector < int> > maze ){
+	vector<vector< int > > table = maze;
+	int r(maze.size()), c(maze[0].size());
+	for(int i=0;i<r;i++){
+		table[i][0] = i;
+	}
+	
+	for(int j =0;j<c;j++){
+		table[0][j] = j;
+	}
+	for(int  i =1;i<r;i++){
+		for(int j  = 1;j<c;j++){
+			if(maze[i][j] == INT_MAX){
+				maze[i][j] = INT_MAX;
+			} else {
+				table[i][j] = min(table[i-1][j],table[i][j-1])+1;
+			}
+		}
+	}
+	pm(table);
+	
+}
+
+
+// DP attempt for all subsets of a set (can do recursively with memoization too
+// no real advantage here, stuck with 2^N complexity, would be neater to do recursively probably
+void allSubs( vector<int> arr ){
+	int n  = arr.size();
+	int c  =0;
+	vector<vector<vector<int> > > collection = {{{ arr[0]}}};
+	vector<vector<int> > temp, t2;
+	
+	for(int i = 1; i<n; i++){
+		temp = collection[i-1];
+		t2 = temp;
+		for(int j = 0; j<t2.size(); j++){
+			t2[j].push_back(arr[i]);
+			temp.push_back(t2[j]);
+			c++;
+		}
+		temp.push_back({{arr[i]}});
+		collection.push_back(temp);
+	}
+	// commented out bit to confirm O(2^N) behaviour
+	//~ cout<<c<<"\t"<<pow(n,2)<<"\t"<<pow(2,n)<<endl;
+	for(int i = 0;i<collection.size(); i++){
+		pm(collection[i]);
+		cout<<"--"<<endl;
+	}
+}
+
+
+// redid string perm given came across it in book again
+// still hurts my brain - muddled through it sans error in recursive sp call
+// (called on j+1 not i+1)
+// Not sure i'll ever get my brain to work this way properly!
+// also passed by reference, oops...
+int sp(string str, int i){
+	int s = str.length();
+	if(i==s-1){
+		cout<<str<<endl;
+	}
+
+	for(int j = i;j<s;j++){
+		swap(str[i],str[j]);
+		sp(str,i+1);
+	}
+	
+	return 0;
+}
+
+// Tower of Hanoi
+// Almost got it solo, but did it arse backwards
+// Also failed to pick up on the intuition about the ordering, i.e.
+// having the role of aux/dest change appropriately (not in a line!)
+void move( int n, stack<int> &src, stack<int> &aux, stack<int> &dest){
+	
+	int v = src.top();
+	if(n == 1){
+		src.pop();
+		dest.push(v);
+	} else {
+		move( n-1, src, dest,aux);
+		
+		src.pop();
+		dest.push(v);
+		
+		move( n-1,aux,src,dest);
+	}	
+	cout<<src.size()<<"\t"<<aux.size()<<"\t"<<dest.size()<<endl;
+}
+
+
+// Function to insert "()" into every position in every string
+// in a vector of strings.  Uses hash map to keep track of 
+// strings already processed
+vector<string> insertPar( const vector<string> &in, unordered_set<string> &tracker ){
+	int l = in.size();
+	vector<string> out;
+	for( int i = 0; i < l; i++ ){
+		string temp = in[i];
+		if( tracker.find(temp) == tracker.end()){
+		cout<<"temp = "<<temp<<endl;
+			tracker.insert(temp);
+			for( int j = 0; j < in[i].length(); j++ ){
+				string t2 = temp;
+				t2.insert(j,"()");
+				out.push_back( t2 );
+			}
+		} else {
+			cout<<"Already done " + temp<<endl;
+		}
+	}
+	
+	return out;
+}
+
+// Lazy recursive implementation to generate all valid strings with 
+// N sets of parentheses. Makes use of the above utility funciton
+// but should probably somehow implement with swap ala permutation question
+vector<string> validPar( int n ){
+	vector<string> out;
+	unordered_set<string> tracker;
+	if(n == 1){
+		return {"()"};
+	}
+	
+	vector<string> prev = validPar(n-1);
+	out = insertPar(prev,tracker);
+	
+	cout<<"X"<<endl;
+	pv(out);
+	return out;
+}
+
+
+void fill( vector<vector< int> > &grid, int x, int y, unordered_set<string > &tracker, int colour){
+	int h(grid.size()), w(grid[0].size());
+	vector<vector<int > > connections = {{x-1,y}, {x+1,y}, {x,y-1}, {x,y+1}};
+	
+	for( int k = 0; k<4; k++){
+		vector<int> conn = connections[k];
+		int a(conn[0]),b(conn[1]);
+		string temp = to_string(conn[0]) + to_string(conn[1]);
+		cout<<"at "<< x<<","<<y<<" visiting "<<temp<<endl;
+		if( a < 0 || a == h || b <0 || b == w ){
+			continue;
+		} else {
+			if( tracker.find(temp) == tracker.end()){
+				//~ cout<<"have not yet visited "<<temp<<endl;
+				tracker.insert( temp );
+				if( grid[a][b] == 0 || grid[a][b] == colour){
+					grid[a][b]  = colour;	
+					fill(grid, a,b,tracker,colour);
+				}
+			
+			}	
+		}
+	}
+}
+
+// Find contiguous subarray with sum equal given integer
+// Runs in O(N) (only does single loop, i.e. each iterator
+// only increases, no backtracking
+vector<int> printSubArrSub( const vector<int> &arr, int s ){
+	int currSum = 0;
+	int val;
+	int l = arr.size();
+	int i(0),j(0);
+	bool found = false; 
+	while( i< l && j < l && !found){
+		val = currSum + arr[j];
+		if( val < s ){
+			currSum+=arr[j];
+			j++;
+			
+		} else if (val > s){
+			currSum-=arr[i];
+			i++;
+		} else if (val == s){
+			found = true;
+			cout<<"sum reached at i = "<<i<<", j = "<<j<<endl;
+			return {i,j};
+		}
+	}
+	
+	cout<<"Not found!"<<endl;
+}
+
+// Max index question
+// Find max j-i such that arr[i]<=arr[j]
+// Brute force soln O(N^2) where we iterate i,j and
+// restart j=i when  test fails/reach end
+// Better way (I *think* O(N)?) is start j at end
+// and reset to position equal to last max before proceeeding
+
+void maxIndex( const vector<int> &arr ){
+	int l = arr.size();
+	int i(0), j(l-1);
+	int diff = 0;
+	int a, b;
+	while( i < j && j<l ){
+	
+		if( arr[i] >= arr[j] ){
+			j--;
+		} else {
+			diff = max(diff,j-i);
+			a = i;
+			b = j;
+			i++;
+			if(j<l-1){
+				j++;
+			}
+		}
+	}
+	cout<<diff<<endl;
+	cout<<a<<"\t"<<b<<endl;
+}
+
+// Interleave question 	
+// https://practice.geeksforgeeks.org/problems/interleaved-strings/1
+// Did before with 2 queues but doesn't work because it lacks backtracking
+// (possible could include this but would be clunky, also prob. equiv to full
+// recursive solution but without elegance
+bool interleave( string &a, string &b, string &c ){
+	int la(a.length()), lb(b.length()), lc(c.length());
+	vector<vector< bool > > table(la+1, vector<bool>(lb+1,false));
+	bool prev1, prev2;
+	table[0][0] =  true;
+	for(int i = 0; i<la; i++){
+		table[i+1][0] =  ( table[i][0] && c[i] == a[i] );
+	}
+	
+	for(int j = 0; j<lb; j++){
+	
+		table[0][j+1] =  ( table[0][j] && c[j] == b[j] );
+	}
+	
+	for(int i = 0; i<la; i++){
+		for(int j = 0; j<lb; j++){
+			prev1 = table[i+1][j];
+			prev2 = table[i][j+1];
+			table[i+1][j+1] = ( (prev1 || prev2 ) && (c[i+j+1] == a[i] || c[i+j+1] == b[j]) );
+		}
+	}
+	//~ cout<<"---"<<endl;
+	//~ pm(table);	
+	
+	return table[ la ][ lb ];
+	
 }

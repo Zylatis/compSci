@@ -16,7 +16,8 @@ void pv( const vector<T> &out ){
 
 /////////////////////////////////////////////////////
 // Print matrix
-void pm( const vector<vector<int> > &out ){
+template <typename T> 
+void pm( const vector<vector<T> > &out ){
 	int l = out.size();
 	for(int i = 0; i<l; i++){
 		pv(out[i]);

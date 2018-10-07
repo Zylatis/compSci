@@ -150,12 +150,12 @@ int main ( int argc, char *argv[] ){
 	
 	
 	// COIN CHANGE DP PROBLEM
-	//~ vector<int> x = {1,2,3};
+	//~ vector<int> x = {1,2};
 	//~ int s = 4;
 	//~ int xx = numWays(x,0,s);
 	//~ cout<<"---"<<endl;
 	//~ cout<<xx<<endl;
-	
+	//~ numWaysDP(x,s);
 	// KNAPSACK PROBLEM
 	//~ vector<int> w = {1,4,2};
 	//~ vector<int> v = {1,2,5};
@@ -165,10 +165,72 @@ int main ( int argc, char *argv[] ){
 	//~ knapsackDP(v, w, 5);
 	
 	// EDIT DISTANCE (I actually got this one first try!)
-	string s1 = "aaaaaaaaaaa";
-	string s2 = "back";
-	int d = editDist(s1,s2);
-	cout<<d<<endl;
+	//~ string s1 = "aaaaaaaback";
+	//~ string s2 = "back";
+	//~ int d = editDist(s1,s2);
+	//~ cout<<d<<endl;
+	
+	// ROBOT MAZE
+	//~ int r(3),c(5);
+	//~ vector<vector<int> > maze( 3,vector<int>(c,0));
+	//~ maze[1][1] = INT_MAX;
+	//~ maze[2][2] = INT_MAX;
+	//~ robotMaze(maze);
+	
+	
+	// ALL SUBSETS (DP)
+	//~ vector<int> set = {1,3,4,6};
+	//~ allSubs(set);
+
+
+	// string perm again
+	//~ string s = "ABC";
+	//~ sp(s,0);
+	
+	
+	// Tower of Hanoi
+	//~ stack<int> s, a, d; // source, auxillary, destination stacks
+	//~ s.push(3);
+	//~ s.push(2);
+	//~ s.push(1);
+	//~ move(3,s,a,d);
+	
+	// make string with N valid parentheses pairs
+	//~ validPar(3);
+	
+	// Paint fill
+	//~ unordered_set<string> tracker;
+	//~ vector<vector< int > > canvas(4,vector<int>(4, 1));
+	//~ canvas[0][0] = 0;
+	//~ canvas[1][0] = 0;
+	//~ canvas[2][0] = 0;
+	//~ canvas[3][0] = 0;
+	//~ canvas[3][1] = 0;
+	//~ canvas[3][2] = 0;
+	//~ canvas[3][3] = 0;
+
+	//~ pm(canvas);
+	//~ cout<<"X"<<endl;
+	//~ fill( canvas, 0,0, tracker,2);
+
+	//~ pm(canvas);
+	
+	// FIND SUBARRAY WITH SUM = S
+	//~ vector<int> arr = {15, 2, 4, 8, 9, 5, 10, 23}; 
+	//~ printSubArrSub( arr, 23);
+	
+	// FIND MAX INDEX
+	//~ vector<int> arr = {3,5,4,2};
+	//~ maxIndex(arr);
+	
+	// STRING INTERLEAVE
+	string a("ac"), b("abcd"), c("abacdc");
+	bool r = interleave(a, b, c);
+	if(r){
+		cout<<"It is"<<endl;
+	} else {
+		cout<<"it isnt"<<endl;
+	}
 	
 	/////////////////////////
 	return 0;
