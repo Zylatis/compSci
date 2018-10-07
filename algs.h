@@ -749,7 +749,7 @@ void maxIndex( const vector<int> &arr ){
 // Did before with 2 queues but doesn't work because it lacks backtracking
 // (possible could include this but would be clunky, also prob. equiv to full
 // recursive solution but without elegance
-bool interleave( string &a, string &b, string &c ){
+void interleave( string a, string b, string c ){
 	int la(a.length()), lb(b.length()), lc(c.length());
 	vector<vector< bool > > table(la+1, vector<bool>(lb+1,false));
 	bool prev1, prev2;
@@ -770,9 +770,10 @@ bool interleave( string &a, string &b, string &c ){
 			table[i+1][j+1] = ( (prev1 || prev2 ) && (c[i+j+1] == a[i] || c[i+j+1] == b[j]) );
 		}
 	}
-	//~ cout<<"---"<<endl;
-	//~ pm(table);	
-	
-	return table[ la ][ lb ];
+	if(table[ la ][ lb ]){
+		cout<<"Yes"<<endl;
+	} else {
+		cout<<"No"<<endl;
+	}
 	
 }

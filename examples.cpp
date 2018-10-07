@@ -224,14 +224,12 @@ int main ( int argc, char *argv[] ){
 	//~ maxIndex(arr);
 	
 	// STRING INTERLEAVE
-	string a("ac"), b("abcd"), c("abacdc");
-	bool r = interleave(a, b, c);
-	if(r){
-		cout<<"It is"<<endl;
-	} else {
-		cout<<"it isnt"<<endl;
-	}
 	
+	interleave("XXY", "XXZ", "XXZXXXY"); 
+    interleave("XY" ,"WZ" ,"WZXY"); 
+    interleave ("XY", "X", "XXY"); 
+    interleave ("YX", "X", "XXY"); 
+    interleave ("XXY", "XXZ", "XXXXZY"); 
 	/////////////////////////
 	return 0;
 	
