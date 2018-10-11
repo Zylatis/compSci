@@ -25,3 +25,11 @@ This is a set of basic implementations of common CS algorithms and data structur
 - Permutations of a string
 - Largest Sum Contiguous Subarray problem (brute force and my own attempt at homegrown Kadane)
 - Remove invalid parentheses in string with fewest number of deletions using BFS (finds multiple solutions)
+- Robot maze
+- Floodfill
+- All valid string with N parenthesis
+- Find contiguous subarray with sum = S
+- Find max j-i in array A such that A[i]<A[j]
+- Check if two strings interleave to give a third
+- Find all subsets of a given set
+- Tower of Hanoi
