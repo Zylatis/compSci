@@ -104,5 +104,13 @@ int findNDig( T a ){
 	return n-1;
 }
 
-
+/////////////////////////////////////////////////////
+// Factorial fn for use in a bunch of stuff	
+int factorial(int n ){
+	
+	if(n == 1){
+		return 1;
+	}
+	return n*factorial(n-1);
+}
 

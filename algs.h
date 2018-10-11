@@ -553,7 +553,7 @@ void robotMaze( vector<vector < int> > maze ){
 // no real advantage here, stuck with 2^N complexity, would be neater to do recursively probably
 void allSubs( vector<int> arr ){
 	int n  = arr.size();
-	int c  =0;
+	int c  = 0;
 	vector<vector<vector<int> > > collection = {{{ arr[0]}}};
 	vector<vector<int> > temp, t2;
 	
@@ -576,6 +576,18 @@ void allSubs( vector<int> arr ){
 	}
 }
 
+// Alternative implementation for allSubs 
+// noted in CTCI solutions
+
+void allSubsBinary( vector<int> arr ){
+	int n = arr.size();
+	int l = pow(2,n);
+	vector<int> bits(l,0);
+	for(int i = 0; i < l; i++ ){
+		// need bitshifting stuff, tbd
+	}
+	
+}
 
 // redid string perm given came across it in book again
 // still hurts my brain - muddled through it sans error in recursive sp call
@@ -621,6 +633,7 @@ void move( int n, stack<int> &src, stack<int> &aux, stack<int> &dest){
 // Function to insert "()" into every position in every string
 // in a vector of strings.  Uses hash map to keep track of 
 // strings already processed
+// I.e. generate all strings with N parentheses which are valid
 vector<string> insertPar( const vector<string> &in, unordered_set<string> &tracker ){
 	int l = in.size();
 	vector<string> out;
@@ -645,6 +658,7 @@ vector<string> insertPar( const vector<string> &in, unordered_set<string> &track
 // Lazy recursive implementation to generate all valid strings with 
 // N sets of parentheses. Makes use of the above utility funciton
 // but should probably somehow implement with swap ala permutation question
+// Uses above (clunky) helper function
 vector<string> validPar( int n ){
 	vector<string> out;
 	unordered_set<string> tracker;
@@ -655,12 +669,12 @@ vector<string> validPar( int n ){
 	vector<string> prev = validPar(n-1);
 	out = insertPar(prev,tracker);
 	
-	cout<<"X"<<endl;
 	pv(out);
 	return out;
 }
 
-
+// Flood fill alg, recursive (DFS)
+// Seems to be correct/optimal soln?
 void fill( vector<vector< int> > &grid, int x, int y, unordered_set<string > &tracker, int colour){
 	int h(grid.size()), w(grid[0].size());
 	vector<vector<int > > connections = {{x-1,y}, {x+1,y}, {x,y-1}, {x,y+1}};
@@ -777,3 +791,250 @@ void interleave( string a, string b, string c ){
 	}
 	
 }
+
+
+// Longest substr with valid parentheses
+// Search for ')' then work backwards until find '(' not already visited
+// Store positions in hash map then work out largest contiguous part
+// (last part TBD)
+
+// Counter suggests O(N) but this is misleading because of the while loops
+// so added in counters to be more explicit. Worth noting the outer while loop is actually
+// irrelevent , just checking edge case basically 
+// So this goes as O(N) + O(M) where M is total length of valid sections checked
+// This explains why the complexity of the SO solution is *identical*: the pop operations
+// there correspond to the backwards steps here
+string validPar( string str ){
+	string out;
+	int l = str.length();
+	
+	char closed = ')';
+	int pos = 0;
+	unordered_set<int> bestSpots;
+	int start = 0;
+	int counter = 0;
+	while( pos < l ){
+		
+		
+		for(int i = 0; i<l; i++){
+			if(str[pos] == closed){
+				break;
+			}
+			pos++;
+			counter++;
+		}
+		//~ while( str[pos] != closed ){
+			//~ pos++;
+			//~ counter++;
+		//~ }s
+		start = pos+1;
+		
+		//~ while(str[pos] == closed && bestSpots.find(pos) == bestSpots.end() ){
+			//~ bestSpots.insert(pos);
+		
+			//~ pos--;
+			//~ counter++;
+		//~ }
+		
+		
+		for(int i =0; i<l; i++){
+			counter++;
+			if(str[pos] == closed && bestSpots.find(pos) == bestSpots.end()){
+				bestSpots.insert(pos);
+				pos--;
+				
+			} else {
+				break;
+			}
+			
+		}
+		bestSpots.insert(pos);
+
+		pos = start;
+		
+	}
+			
+	//~ for(const auto& elem: bestSpots){
+		//~ cout<<elem<<endl;
+	//~ }
+	cout<<l<<endl;	
+	cout<<counter<<endl;
+	return out;
+}
+
+
+
+
+// Pinched this longest valid substr from SO answer
+// Is very nice and contains the bit i was missing to make the
+// soln with stack work. Very clearly O(N) and better than my dict
+// soln above
+void SOvalidPar( string str ){
+	int l = str.length();
+	int last = -1;
+	int maxLen = 0;	
+	int count= 0;
+	stack<int> stack;
+	for(int i = 0; i<l; i++){
+		if(str[i] == '('){
+			stack.push(i);
+			count++;
+		} else {
+			if(stack.empty()){
+				last = i;
+				count++;
+			} else {
+				stack.pop();
+				count++;
+				if(stack.empty()){
+					maxLen = max(maxLen,i-last);
+					count++;
+				} else {
+					maxLen = max(maxLen, i - stack.top());
+					count++;
+				}
+			}
+			
+		}
+		
+	}
+	cout<<l<<endl;
+	cout<<count<<endl;
+	cout<<maxLen<<endl;
+	
+}
+
+// Given a sequence of I,D (increasing, decreasing) and using only digits
+// 1-9 without repeats, find the smallest number satisfying that sequence
+// from GFG google interview repo.
+// Lots of aux functions and brute force took longer than it should have to write...
+// also needs more extensive edge testing
+bool compare( vector<int> num, string str){
+	int n = num.size()-1;
+	
+	//~ bool out = true;
+	for(int i = 0; i<n;i++){
+		if( ( str[i] == 'I' && num[i+1] - num[i] < 0 )|| ( str[i] == 'D' && num[i+1] - num[i] > 0 )){
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+vector< vector<int> > aux(string str, int n ){
+	if(n == 1){
+		return {{1},{2},{3},{4},{5},{6},{7},{8},{9}};
+	}
+	int l = str.length();
+	vector<vector<int > > temp = aux(str,n-1);
+	vector<vector< int > > temp2;
+	for(int i = 0; i<temp.size(); i++){
+		vector<int> current = temp[i];
+		
+		for(int j = 1; j<10; j++){
+			vector<int> newV = current;
+			if( find(current.begin(), current.end(), j) == current.end() ){ // if integer not in use
+				newV.push_back(j);
+				if( compare(newV,str) ){
+					temp2.push_back(newV);
+				}
+			}
+		}
+	}
+	
+	return temp2;
+}
+
+// uses above helper functions
+int largestIDSeq( string str ){
+	int l  = str.length();
+	vector<vector<int > > allSets = aux(str,l+1);	
+	pv(allSets[0]);
+	return 0;
+}
+
+// shifts all elements in vector by val
+void modifyV( vector<int> &in, int val ){
+	for(int i = 0;i<in.size(); i++){
+		in[i] + val;
+	}
+}
+
+// 2nd round largest ID seq solution
+// 9oct incomplete
+int largestIDSeq2( string str ){
+	int l  = str.length();
+	vector<int> num(l+1,0);
+	unordered_set<int> used;
+	num[0] = 1;
+	used.insert(1);
+	int lastS = 1;
+	for(int i = 0; i<l;i++){
+		char c = str[i];
+		if( c == 'D' && num[i+1] - num[i] >0){
+			for(int j = lastS+1; j<10; j++){
+				if( used.find( j )==used.end()){
+					
+				}
+			}
+		}
+	}
+
+	return 0;
+}
+
+
+// Longest common subsequence
+// Again need to come back and think more carefully about
+// more concisely inputting initial conditions (9oct seems okay?)
+int LCS( string a, string b ){
+	int out;
+	string LCS = ""; // store LCS string
+	int l1(a.length()), l2(b.length());
+	vector<vector< int > > table( l1+1, vector<int>(l2+1,0));
+	
+	int val = 0;
+	for(int  i =0; i<l1; i++){
+		for(int j = 0; j<l2; j++){
+			int val =  max(table[i][j+1], table[i+1][j] );
+			if( a[i] == b[j] ){
+				table[i+1][j+1] =val + 1;
+				LCS+=a[i];
+
+			} else {
+				table[i+1][j+1] = val;
+			}
+		}
+		
+	}
+	cout<<LCS<<endl;
+	pm(table);
+	return table[l1][l2];
+}
+
+// From https://www.youtube.com/watch?v=IWvbPIYQPFM
+// (will search elsewhere too once sketched solution)
+
+
+int gridArea( vector<vector< int > > &grid, int x, int y, int colour, unordered_set<string> &tracker ){
+	int out, h(grid.size()), w(grid[0].size());
+	vector<vector<int> > adjList = {{x-1,y},{x+1,y},{x,y-1},{x,y+1}};
+	
+	for(int k = 0; k<4; k++){
+		vector<int> connection = adjList[k];
+		int a(connection[0]), b(connection[1]);
+		string coord = to_string(a)+to_string(b);
+		
+		if( a <0 || a == h || b <0 || b==w){
+			continue;
+		}
+		else if( grid[a][b] == colour &&  tracker.find( coord ) == tracker.end() ){
+			tracker.insert(coord);
+			gridArea( grid, a, b, colour, tracker);
+		}
+	}
+
+	return tracker.size();
+}	
+

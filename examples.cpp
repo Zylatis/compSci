@@ -224,12 +224,67 @@ int main ( int argc, char *argv[] ){
 	//~ maxIndex(arr);
 	
 	// STRING INTERLEAVE
+	// Examples taken from GFG
+	//~ interleave("XXY", "XXZ", "XXZXXXY"); 
+    //~ interleave("XY" ,"WZ" ,"WZXY"); 
+    //~ interleave ("XY", "X", "XXY"); 
+    //~ interleave ("YX", "X", "XXY"); 
+    //~ interleave ("XXY", "XXZ", "XXXXZY"); 
+    
+    // LONGEST VALID SECTION OF PARS (GFG)
+	//~ validPar("(()()(()");
+	//~ string s="((((((((((((((((()()()()()()((((()()()()()()()))()()))))(((()()(()(((((((((((((((((((()()()()()()((((((((((((((((()()()()()()()))()()))))(((()()(()()))()()))))(((()()(()(((((((((((((()()()()()()()))()()))))(((()()(()";
+	//~ validPar(s);
+	//~ SOvalidPar(s);
 	
-	interleave("XXY", "XXZ", "XXZXXXY"); 
-    interleave("XY" ,"WZ" ,"WZXY"); 
-    interleave ("XY", "X", "XXY"); 
-    interleave ("YX", "X", "XXY"); 
-    interleave ("XXY", "XXZ", "XXXXZY"); 
+	// I/D SETS
+	// recursive works, working on smarter one
+	// Unclear if this can be done with bottom up DP
+	// Given the uniqueness of elements, possibly no advantage
+	// nor to memoization
+	// ( check if recomputation is occuring)
+	//~ largestIDSeq2("DDI");
+
+
+	// LONGEST COMMON SUBSEQUENCE
+	//~ LCS("AEDFHR","ABCDGH");
+	
+	// FLOOD FILL VARIANT FROM GFG
+	vector<vector< int > > grid( 3, vector<int>(5,1));
+	grid[0][3] = 2;
+	grid[0][4] = 2;
+	grid[1][0] = 2;
+	grid[1][2] = 3;
+	grid[1][3] = 2;
+	grid[1][4] = 3;
+	grid[2][0] = 2;
+	grid[2][1] = 2;
+	grid[2][2] = 3;
+	grid[2][3] = 3;
+	grid[2][4] = 3;
+	
+	//~ unordered_set<string> t1;
+	//~ cout<<gridArea(grid, 0, 0, 1, t1)<<endl;
+	//~ t1 = {};
+	//~ cout<<gridArea(grid, 0, 4, 2, t1)<<endl;
+	//~ t1 = {};
+	//~ cout<<gridArea(grid, 1, 2, 3, t1)<<endl;
+	
+	
+	// PLAYING WITH BITSHIFTING
+	// Generate all subsets of a set of length N
+	int nE = 3;
+	int n = pow(2,3);
+	for( int i = 0; i<n; i++){
+		vector<int> temp = {};
+		for(int j = 0; j<nE; j++){
+			if( (i & (1<<j))!=0){ // does number have 1 in jth bit
+				temp.push_back(j);
+			}
+		}
+		pv(temp);
+	}
+
 	/////////////////////////
 	return 0;
 	
