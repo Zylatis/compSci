@@ -20,6 +20,8 @@
 #include <gsl/gsl_complex_math.h>
 #include <algorithm>
 #include <unordered_set>
+#include <unordered_map>
 #include <stack> 
 #include <queue>
+#include <bitset>
 using namespace std;
